@@ -42,16 +42,6 @@ public class ArtistaController {
         return null;
     }
 
-    public List<Artista> findArtistasByNombre(String nombre) {
-        Document filter = new Document("nombre", nombre);
-        List<Document> results = mongoDBOperations.findDocuments(filter);
-
-        return results.stream().map(document -> {
-            Genero generoArtista = new Genero(document.getString("genero"));
-            return new Artista(document.getString("nombre"), generoArtista);
-        }).toList();
-    }
-
 
     public List<Artista> findArtistasByGenero(String genero) {
         Document filter = new Document("genero", genero);
@@ -76,11 +66,4 @@ public class ArtistaController {
         mongoDBOperations.updateDocument(filter, update);
     }
 
-    public void replaceArtista(Document filter, Document replacement) {
-        mongoDBOperations.replaceDocument(filter, replacement);
-    }
-
-    public void showArtista(Document filter) {
-        mongoDBOperations.findDocument(filter);
-    }
 }

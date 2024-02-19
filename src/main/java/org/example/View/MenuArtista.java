@@ -19,7 +19,8 @@ public class MenuArtista {
             System.out.println("3. Eliminar artista");
             System.out.println("4. Buscar artista");
             System.out.println("5. Listar todos los artistas");
-            System.out.println("6. Volver");
+            System.out.println("6. Eliminar todos los artistas");
+            System.out.println("7. Volver");
             opcion = new java.util.Scanner(System.in).nextInt();
             switch (opcion) {
                 case 1:
@@ -38,12 +39,24 @@ public class MenuArtista {
                     MenuArtista.menuListarArtistas();
                     break;
                 case 6:
+                    MenuArtista.menuEliminarTodo();
+                case 7:
                     System.out.println("¡Hasta luego!");
                     break;
                 default:
                     System.out.println("Opción inválida");
             }
         } while (opcion != 6);
+    }
+
+    private static void menuEliminarTodo() {
+        System.out.println("¿Está seguro que desea eliminar todos los artistas? (s/n)");
+        String respuesta = new java.util.Scanner(System.in).nextLine();
+        if(respuesta.equals("s")) {
+            ArtistaController artistaController = new ArtistaController();
+            artistaController.deleteAllArtistas();
+            System.out.println("Todos los artistas han sido eliminados");
+        }
     }
 
     private static void menuEliminarArtista() {
