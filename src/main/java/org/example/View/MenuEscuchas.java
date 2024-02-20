@@ -1,49 +1,54 @@
 package org.example.View;
 
+import org.bson.Document;
 import org.example.Controller.ArtistaController;
 import org.example.Controller.EscuchasMensualesController;
 import org.example.Controller.Util;
 import org.example.Entity.Artista;
 import org.example.Entity.EscuchasMensuales;
 
+
 public class MenuEscuchas {
 
     public static void mostrarMenu() {
         int opcion = 0;
-        System.out.println("1. Insertar escucha");
-        System.out.println("2. Modificar escucha");
-        System.out.println("3. Eliminar escucha");
-        System.out.println("4. Mostrar escuchas");
-        System.out.println("5. Buscar escucha");
-        System.out.println("6. Eliminar todas las escuchas");
-        System.out.println("7. Volver al menú principal");
 
-        opcion = new java.util.Scanner(System.in).nextInt();
-        switch (opcion) {
-            case 1:
-                MenuEscuchas.menuInsertarEscucha();
-                break;
-            case 2:
-                MenuEscuchas.menuModificarEscucha();
-                break;
-            case 3:
-                MenuEscuchas.menuEliminarEscucha();
-                break;
-            case 4:
-                MenuEscuchas.menuMostrarEscuchas();
-                break;
-            case 5:
-                MenuEscuchas.menuBuscarEscucha();
-                break;
-            case 6:
-                MenuEscuchas.menuEliminarTodasLasEscuchas();
-                break;
-            case 7:
-                System.out.println("¡Hasta luego!");
-                break;
-            default:
-                System.out.println("Opción inválida");
-        }
+        do{
+            System.out.println("1. Insertar escucha");
+            System.out.println("2. Modificar escucha");
+            System.out.println("3. Eliminar escucha");
+            System.out.println("4. Mostrar escuchas");
+            System.out.println("5. Buscar escucha");
+            System.out.println("6. Eliminar todas las escuchas");
+            System.out.println("7. Volver al menú principal");
+
+            opcion = new java.util.Scanner(System.in).nextInt();
+            switch (opcion) {
+                case 1:
+                    MenuEscuchas.menuInsertarEscucha();
+                    break;
+                case 2:
+                    MenuEscuchas.menuModificarEscucha();
+                    break;
+                case 3:
+                    MenuEscuchas.menuEliminarEscucha();
+                    break;
+                case 4:
+                    MenuEscuchas.menuMostrarEscuchas();
+                    break;
+                case 5:
+                    MenuEscuchas.menuBuscarEscucha();
+                    break;
+                case 6:
+                    MenuEscuchas.menuEliminarTodasLasEscuchas();
+                    break;
+                case 7:
+                    System.out.println("¡Hasta luego!");
+                    break;
+                default:
+                    System.out.println("Opción inválida");
+            }
+        } while (opcion != 7);
     }
 
     private static void menuEliminarTodasLasEscuchas() {
@@ -108,20 +113,31 @@ public class MenuEscuchas {
     }
 
     private static void menuModificarEscucha() {
-
         System.out.println("Ingrese el nombre del artista que desea modificar");
         String nombreArtista = new java.util.Scanner(System.in).nextLine();
         System.out.println("Ingrese el mes que desea modificar");
-        String mes = new java.util.Scanner(System.in).nextLine();
+        String mes = new java.util.Scanner(System.in).nextLine().toLowerCase(); // Convertir a minúsculas
 
-        // TODO:Validaciones si el artista y el mes existen
+        // TODO: Validaciones si el artista y el mes existen
 
         System.out.println("Ingrese la cantidad de escuchas");
         int escuchas = new java.util.Scanner(System.in).nextInt();
+
         EscuchasMensualesController escuchasMensualesController = new EscuchasMensualesController();
-        escuchasMensualesController.updateEscuchasMensuales(new org.bson.Document("artista.nombre", nombreArtista).append("mes", mes), new org.bson.Document("escuchas", escuchas));
+
+        // Construir el filtro para buscar la escucha mensual específica
+        Document filter = new Document("artista.nombre", nombreArtista).append("mes", mes);
+
+        // Construir el documento de actualización correctamente usando '$set'
+        Document update = new Document("$set", new Document("escuchas", escuchas));
+
+        // Llamar al método de actualización con el filtro y el documento de actualización
+        escuchasMensualesController.updateEscuchasMensuales(filter, update);
+
         System.out.println("Escucha modificada");
     }
+
+
 
     private static void menuInsertarEscucha() {
         System.out.println("Ingrese el nombre del artista");

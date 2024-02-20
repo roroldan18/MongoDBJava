@@ -46,7 +46,7 @@ public class MenuArtista {
                 default:
                     System.out.println("Opción inválida");
             }
-        } while (opcion != 6);
+        } while (opcion != 7);
     }
 
     private static void menuEliminarTodo() {

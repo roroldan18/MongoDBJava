@@ -7,15 +7,16 @@ import org.example.Entity.Genero;
 public class MenuGenero {
     public static void mostrarMenu() {
         int opcion = 0;
-        System.out.println("1. Insertar género");
-        System.out.println("2. Modificar género");
-        System.out.println("3. Eliminar género");
-        System.out.println("4. Mostrar géneros");
-        System.out.println("5. Buscar género");
-        System.out.println("6. Eliminar todos los géneros");
-        System.out.println("7. Volver al menú principal");
 
         do {
+            System.out.println("1. Insertar género");
+            System.out.println("2. Modificar género");
+            System.out.println("3. Eliminar género");
+            System.out.println("4. Mostrar géneros");
+            System.out.println("5. Buscar género");
+            System.out.println("6. Eliminar todos los géneros");
+            System.out.println("7. Volver al menú principal");
+
             opcion = new java.util.Scanner(System.in).nextInt();
             switch (opcion) {
                 case 1:
@@ -82,12 +83,19 @@ public class MenuGenero {
         String nombreGenero = new java.util.Scanner(System.in).nextLine();
         System.out.println("Ingrese el nuevo nombre del género");
         String nuevoNombreGenero = new java.util.Scanner(System.in).nextLine();
+
         GeneroController generoController = new GeneroController();
         Document filter = new Document("nombre", nombreGenero);
-        Document update = new Document("nombre", nuevoNombreGenero);
+
+        // Construir el documento de actualización correctamente usando '$set'
+        Document update = new Document("$set", new Document("nombre", nuevoNombreGenero));
+
+        // Llamar al método de actualización con el filtro y el documento de actualización
         generoController.updateGenero(filter, update);
+
         System.out.println("Género modificado");
     }
+
 
     private static void menuInsertarGenero() {
         System.out.println("Ingrese el nombre del género");
